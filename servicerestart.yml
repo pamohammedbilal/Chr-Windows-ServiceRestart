@@ -1,0 +1,21 @@
+---
+# **** Setting Socket tunnel ****
+- name: Socks_Connectivity
+  hosts: all
+  gather_facts: true
+  ignore_errors: true
+
+ 
+  roles: 
+    - role: ansible-role-event-socks-tunnel
+      #run_once: true
+      delegate_to: localhost
+      vars:
+        acc_id: "{{ account_triname }}"
+        transaction_id: "{{ tower_job_id }}"
+        
+- name: Restart Windows NetWorker Remote Exec Service
+  win_service:
+    name: Nsrexecd
+    state: restarted
+  become: true
